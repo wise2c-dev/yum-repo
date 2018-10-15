@@ -15,7 +15,7 @@ script:
    mkdir -p /rpms &&
    yum -y install --downloadonly --downloaddir=/rpms yum-utils device-mapper-persistent-data lvm2 &&
    yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo && 
-   yum -y install --downloadonly --downloaddir=/rpms --setopt=obsoletes=0 docker-ce-selinux-17.03.02.ce docker-ce-17.03.2.ce &&
+   yum -y install --downloadonly --downloaddir=/rpms --setopt=obsoletes=0 docker-ce-selinux-17.03.3.ce docker-ce-17.03.3.ce &&
    yum remove -y python-chardet &&
    yum -y install --downloadonly --downloaddir=/rpms docker-python docker-compose python-chardet python-requests &&
    yum -y install --downloadonly --downloaddir=/rpms ipset ipvsadm conntrack-tools &&
