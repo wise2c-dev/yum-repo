@@ -9,8 +9,8 @@ before_install:
 - docker pull centos:7.5.1804
 - DOCKER_VERSION=18.06.1.ce
 #- KUBERNETES_VERSION=1.11.5
-- docker run --rm --name=kubeadm-version wisecloud/kubeadm-version:$TRAVIS_BRANCH kubeadm config images list --feature-gates=CoreDNS=false > ${path}/k8s-images-list.txt
-- KUBERNETES_VERSION=`cat ${path}/k8s-images-list.txt |grep kube-apiserver |awk -F ':' '{print $2}'`
+- docker run --rm --name=kubeadm-version wisecloud/kubeadm-version:$TRAVIS_BRANCH kubeadm config images list --feature-gates=CoreDNS=false > /tmp/k8s-images-list.txt
+- KUBERNETES_VERSION=`cat /tmp/k8s-images-list.txt |grep kube-apiserver |awk -F ':' '{print $2}'`
 
 
 script:
