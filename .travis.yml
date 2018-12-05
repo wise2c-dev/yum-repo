@@ -28,7 +28,7 @@ script:
    yum -y install --downloadonly --downloaddir=/rpms ipset ipvsadm conntrack-tools &&
    yum -y install --downloadonly --downloaddir=/rpms audit rsync jq git tcpdump nc bind-utils net-tools &&
    yum -y install --downloadonly --downloaddir=/rpms ceph-deploy ceph ceph-radosgw rbd-nbd rbd-mirror open-vm-tools  nfs-utils && 
-   yum -y install --downloadonly --downloaddir=/rpms kubernetes-cni-0.6.0 kubectl-${KUBERNETES_VERSION[1:]} kubelet-${KUBERNETES_VERSION[1:]} kubeadm-${KUBERNETES_VERSION[1:]} &&
+   yum -y install --downloadonly --downloaddir=/rpms kubernetes-cni-0.6.0 kubectl-${KUBERNETES_VERSION:1} kubelet-${KUBERNETES_VERSION:1} kubeadm-${KUBERNETES_VERSION:1} &&
    yum install -y createrepo &&
    yum clean all &&
    createrepo /rpms"
