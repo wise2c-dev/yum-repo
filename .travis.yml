@@ -1,14 +1,22 @@
 sudo: required
 
+
 services:
 - docker
 
+
 before_install:
-- docker pull centos:7.4.1708
+- docker pull centos:7.5.1804
+- docker run --rm --name=kubeadm-version wisecloud/kubeadm-version:$TRAVIS_BRANCH kubeadm config images list --feature-gates=CoreDNS=false > /tmp/k8s-images-list.txt
+- KUBERNETES_VERSION=`cat /tmp/k8s-images-list.txt |grep kube-apiserver |awk -F ':' '{print $2}'`
+- echo $KUBERNETES_VERSION
+- DOCKER_VERSION=1.13.1
+#- KUBERNETES_VERSION=1.11.5
+
 
 script:
 - >
-  docker run -t --rm -v ${PWD}/rpms:/rpms -v ${PWD}/kubernetes.repo:/etc/yum.repos.d/kubernetes.repo centos:7.4.1708
+  docker run -t --rm -v ${PWD}/rpms:/rpms -v ${PWD}/kubernetes.repo:/etc/yum.repos.d/kubernetes.repo centos:7.5.1804
   bash -c
   "yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm &&
    yum install -y https://download.ceph.com/rpm-luminous/el7/noarch/ceph-release-1-1.el7.noarch.rpm &&
@@ -17,7 +25,7 @@ script:
    yum -y install --downloadonly --downloaddir=/rpms docker docker-python docker-compose python-chardet python-requests &&
    yum -y install --downloadonly --downloaddir=/rpms audit rsync jq git tcpdump nc bind-utils net-tools chrony &&
    yum -y install --downloadonly --downloaddir=/rpms ceph-deploy ceph ceph-radosgw rbd-nbd rbd-mirror open-vm-tools  nfs-utils && 
-   yum -y install --downloadonly --downloaddir=/rpms kubernetes-cni-0.5.1-1 kubectl-1.8.6 kubelet-1.8.6 kubeadm-1.8.6
+   yum -y install --downloadonly --downloaddir=/rpms kubernetes-cni-0.5.1-1 kubectl-${KUBERNETES_VERSION:1} kubelet-${KUBERNETES_VERSION:1} kubeadm-${KUBERNETES_VERSION:1} &&
    yum install -y createrepo &&
    yum clean all &&
    createrepo /rpms"
