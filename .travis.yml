@@ -4,8 +4,8 @@ services:
 - docker
 
 before_install:
-- VERSION=v1.11.x-7.5-redhat
-- CENTOS_VERSION=7.5.1804
+- VERSION=v1.11.x-7.4-redhat
+- CENTOS_VERSION=7.4.1708
 - DOCKER_VERSION=1.13.1-75.git8633870.el7.centos.x86_64
 - KUBERNETES_VERSION=v1.11.6
 
