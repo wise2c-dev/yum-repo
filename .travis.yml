@@ -18,7 +18,7 @@ script:
       mkdir -p /rpms &&
       yum remove -y python-chardet &&
       yum -y install --downloadonly --downloaddir=/rpms yum-utils device-mapper-persistent-data lvm2 &&
-      yum -y install --downloadonly --downloaddir=/rpms docker-${DOCKER_VERSION} docker-python docker-compose python-chardet python-requests &&
+      yum -y install --downloadonly --downloaddir=/rpms docker-${DOCKER_VERSION} docker-python docker-compose python-chardet python-requests python-jinja2 &&
       yum -y install --downloadonly --downloaddir=/rpms ipset ipvsadm conntrack-tools &&
       yum -y install --downloadonly --downloaddir=/rpms audit rsync jq git tcpdump nc bind-utils net-tools chrony &&
       yum -y install --downloadonly --downloaddir=/rpms ceph-deploy ceph ceph-radosgw rbd-nbd rbd-mirror open-vm-tools  nfs-utils && 
