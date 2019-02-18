@@ -6,7 +6,8 @@ services:
 before_install:
 - VERSION=v1.11.7
 - KUBERNETES_VERSION=v1.11.7
-- DOCKER_VERSION=docker-1.13.1-75.git8633870.el7.centos.x86_64
+#- DOCKER_VERSION=docker-1.13.1-75.git8633870.el7.centos.x86_64
+- DOCKER_VERSION=docker-1.13.1-91.git07f3374.el7.centos.x86_64
 - CENTOS_74_VERSION=centos:7.4.1708
 - CENTOS_75_VERSION=centos:7.5.1804
 - CENTOS_76_VERSION=centos:7.6.1810
