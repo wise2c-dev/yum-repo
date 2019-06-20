@@ -61,6 +61,6 @@ script:
    curl -o /rpms/istio-linux.tar.gz https://github.com/istio/istio/releases/download/${ISTIO_VERSION}/istio-${ISTIO_VERSION}-linux.tar.gz"
    
 - sudo chmod -R 755 ${PWD}/rpms
-- docker build -t wisecloud/yum-repo:v${KUBE_VERSION} .
+- docker build -t wisecloud/yum-repo:v${KUBE_VERSION}-gpu .
 - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-- docker push wisecloud/yum-repo:v${KUBE_VERSION}
+- docker push wisecloud/yum-repo:v${KUBE_VERSION}-gpu
