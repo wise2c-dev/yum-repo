@@ -38,7 +38,6 @@ script:
    yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo &&
    mkdir -p /rpms/centos75 &&
    yum remove -y python-chardet chrony &&
-   distribution=$(. /etc/os-release;echo $ID$VERSION_ID) && curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.repo | sudo tee /etc/yum.repos.d/nvidia-docker.repo &&
    yum -y install --downloadonly --downloaddir=/rpms/centos75 docker-ce-${DOCKER_VERSION}.el7.x86_64 docker-python docker-compose python-chardet python-requests python-jinja2 nvidia-docker2 &&
    yum -y install --downloadonly --downloaddir=/rpms/centos75 chrony audit rsync jq git tcpdump nc bind-utils net-tools ipvsadm graphviz &&
    yum -y install --downloadonly --downloaddir=/rpms/centos75 ceph-deploy ceph ceph-radosgw rbd-nbd rbd-mirror open-vm-tools nfs-utils && 
