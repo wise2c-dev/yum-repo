@@ -39,7 +39,7 @@ script:
    mkdir -p /rpms/centos75 &&
    yum remove -y python-chardet chrony &&
    yum -y install --downloadonly --downloaddir=/rpms/centos75 docker-ce-${DOCKER_VERSION}.el7.x86_64 docker-python docker-compose python-chardet python-requests python-jinja2 &&
-   yum -y install --downloadonly --downloaddir=/rpms/centos75 nvidia-container-runtime-2.0.0-3.docker18.06.3 nvidia-docker2-2.0.3-3.docker18.06.3.ce.noarch &&
+   yum -y install --downloadonly --downloaddir=/rpms/centos75 libnvidia-container-tools-1.0.2 nvidia-container-runtime-2.0.0-3.docker18.06.3 nvidia-docker2-2.0.3-3.docker18.06.3.ce.noarch &&
    yum -y install --downloadonly --downloaddir=/rpms/centos75 chrony audit rsync jq git tcpdump nc bind-utils net-tools ipvsadm graphviz &&
    yum -y install --downloadonly --downloaddir=/rpms/centos75 ceph-deploy ceph ceph-radosgw rbd-nbd rbd-mirror open-vm-tools nfs-utils && 
    yum -y install --downloadonly --downloaddir=/rpms/centos75 kubernetes-cni kubectl-${KUBE_VERSION} kubelet-${KUBE_VERSION} kubeadm-${KUBE_VERSION}"
