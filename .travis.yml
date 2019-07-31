@@ -4,10 +4,9 @@ services:
 - docker
 
 before_install:
-- VERSION=v1.11.8
-- KUBERNETES_VERSION=v1.11.8
-#- DOCKER_VERSION=docker-1.13.1-75.git8633870.el7.centos.x86_64
-- DOCKER_VERSION=docker-1.13.1-91.git07f3374.el7.centos.x86_64
+- VERSION=v1.11.10
+- KUBERNETES_VERSION=v1.11.10
+- DOCKER_VERSION=docker-1.13.1-96.gitb2f74b2.el7.centos.x86_64
 - CENTOS_74_VERSION=centos:7.4.1708
 - CENTOS_75_VERSION=centos:7.5.1804
 - CENTOS_76_VERSION=centos:7.6.1810
