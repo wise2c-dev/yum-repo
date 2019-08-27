@@ -4,16 +4,23 @@ services:
 - docker
 
 before_install:
+- sudo apt-get update
+- sudo apt-get install python-pip curl
+- sudo pip install --upgrade pip
+- sudo -H pip install --ignore-installed PyYAML
+- sudo pip install yq
+- curl -sl https://raw.githubusercontent.com/wise2c-dev/wise2c-config/master/config.yaml -o /tmp/config.yaml
+- KUBE_VERSION=$(cat /tmp/config.yaml |  yq -r '.branchs[] | select(.branch == "release-1.13")|.kube_version')
+- DOCKER_VERSION=docker-$(cat /tmp/config.yaml |  yq -r '.branchs[] | select(.branch == "release-1.13")|.docker_version')
 - docker pull centos:7.4.1708
 - docker pull centos:7.5.1804
 - docker pull centos:7.6.1810
+
 
 env:
  global:
    - HELM_VERSION=2.14.0
    - CEPH_VERSION=nautilus
-   - KUBE_VERSION=1.13.8
-   - DOCKER_VERSION=18.06.3.ce-3
    - ISTIO_VERSION=1.1.7
  
 script:
@@ -29,7 +36,7 @@ script:
    yum -y install --downloadonly --downloaddir=/rpms/centos74 docker-ce-${DOCKER_VERSION}.el7.x86_64 docker-python docker-compose python-chardet python-requests python-jinja2 &&
    yum -y install --downloadonly --downloaddir=/rpms/centos74 chrony audit rsync jq git tcpdump nc bind-utils net-tools ipvsadm graphviz &&
    yum -y install --downloadonly --downloaddir=/rpms/centos74 ceph-deploy ceph ceph-radosgw rbd-nbd rbd-mirror open-vm-tools nfs-utils && 
-   yum -y install --downloadonly --downloaddir=/rpms/centos74 kubernetes-cni kubectl-${KUBE_VERSION} kubelet-${KUBE_VERSION} kubeadm-${KUBE_VERSION}"
+   yum -y install --downloadonly --downloaddir=/rpms/centos74 kubernetes-cni kubectl-${KUBE_VERSION:1} kubelet-${KUBE_VERSION:1} kubeadm-${KUBE_VERSION:1}"
   docker run -t --rm -v ${PWD}/rpms:/rpms -v ${PWD}/kubernetes.repo:/etc/yum.repos.d/kubernetes.repo centos:7.5.1804
   bash -c
   "yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm &&
@@ -41,7 +48,7 @@ script:
    yum -y install --downloadonly --downloaddir=/rpms/centos75 docker-ce-${DOCKER_VERSION}.el7.x86_64 docker-python docker-compose python-chardet python-requests python-jinja2 &&
    yum -y install --downloadonly --downloaddir=/rpms/centos75 chrony audit rsync jq git tcpdump nc bind-utils net-tools ipvsadm graphviz &&
    yum -y install --downloadonly --downloaddir=/rpms/centos75 ceph-deploy ceph ceph-radosgw rbd-nbd rbd-mirror open-vm-tools nfs-utils && 
-   yum -y install --downloadonly --downloaddir=/rpms/centos75 kubernetes-cni kubectl-${KUBE_VERSION} kubelet-${KUBE_VERSION} kubeadm-${KUBE_VERSION}"
+   yum -y install --downloadonly --downloaddir=/rpms/centos75 kubernetes-cni kubectl-${KUBE_VERSION:1} kubelet-${KUBE_VERSION:1} kubeadm-${KUBE_VERSION:1}"
   docker run -t --rm -v ${PWD}/rpms:/rpms -v ${PWD}/kubernetes.repo:/etc/yum.repos.d/kubernetes.repo centos:7.6.1810
   bash -c
   "yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm &&
@@ -53,7 +60,7 @@ script:
    yum -y install --downloadonly --downloaddir=/rpms/centos76 docker-ce-${DOCKER_VERSION}.el7.x86_64 docker-python docker-compose python-chardet python-requests python-jinja2 &&
    yum -y install --downloadonly --downloaddir=/rpms/centos76 chrony audit rsync jq git tcpdump nc bind-utils net-tools ipvsadm graphviz &&
    yum -y install --downloadonly --downloaddir=/rpms/centos76 ceph-deploy ceph ceph-radosgw rbd-nbd rbd-mirror open-vm-tools nfs-utils && 
-   yum -y install --downloadonly --downloaddir=/rpms/centos76 kubernetes-cni kubectl-${KUBE_VERSION} kubelet-${KUBE_VERSION} kubeadm-${KUBE_VERSION} &&
+   yum -y install --downloadonly --downloaddir=/rpms/centos76 kubernetes-cni kubectl-${KUBE_VERSION:1} kubelet-${KUBE_VERSION:1} kubeadm-${KUBE_VERSION:1} &&
    yum install -y createrepo &&
    yum clean all &&
    createrepo /rpms &&
@@ -61,6 +68,6 @@ script:
    curl -o /rpms/istio-linux.tar.gz https://github.com/istio/istio/releases/download/${ISTIO_VERSION}/istio-${ISTIO_VERSION}-linux.tar.gz"
    
 - sudo chmod -R 755 ${PWD}/rpms
-- docker build -t wisecloud/yum-repo:v${KUBE_VERSION} .
+- docker build -t wisecloud/yum-repo:${KUBE_VERSION} .
 - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-- docker push wisecloud/yum-repo:v${KUBE_VERSION}
+- docker push wisecloud/yum-repo:${KUBE_VERSION}
