@@ -4,9 +4,14 @@ services:
 - docker
 
 before_install:
-- VERSION=v1.11.10
-- KUBERNETES_VERSION=v1.11.10
-- DOCKER_VERSION=docker-1.13.1-96.gitb2f74b2.el7.centos.x86_64
+- sudo apt-get update
+- sudo apt-get install python-pip curl
+- sudo pip install --upgrade pip
+- sudo -H pip install --ignore-installed PyYAML
+- sudo pip install yq
+- curl -sl https://raw.githubusercontent.com/wise2c-dev/wise2c-config/master/config.yaml -o /tmp/config.yaml
+- KUBE_VERSION=$(cat /tmp/config.yaml |  yq -r '.branchs[] | select(.branch == "release-1.11")|.kube_version')
+- DOCKER_VERSION=$(cat /tmp/config.yaml |  yq -r '.branchs[] | select(.branch == "release-1.11")|.docker_version')
 - CENTOS_74_VERSION=centos:7.4.1708
 - CENTOS_75_VERSION=centos:7.5.1804
 - CENTOS_76_VERSION=centos:7.6.1810
@@ -22,10 +27,10 @@ script:
    yum install -y https://download.ceph.com/rpm-mimic/el7/noarch/ceph-release-1-1.el7.noarch.rpm &&
    mkdir -p /rpms/centos74 &&
    yum remove -y python-chardet chrony &&
-   yum -y install --downloadonly --downloaddir=/rpms/centos74 ${DOCKER_VERSION} docker-python docker-compose python-chardet python-requests python-jinja2 &&
+   yum -y install --downloadonly --downloaddir=/rpms/centos74 docker-${DOCKER_VERSION} docker-python docker-compose python-chardet python-requests python-jinja2 &&
    yum -y install --downloadonly --downloaddir=/rpms/centos74 chrony audit rsync jq git tcpdump nc bind-utils net-tools ipvsadm &&
    yum -y install --downloadonly --downloaddir=/rpms/centos74 ceph-deploy ceph ceph-radosgw rbd-nbd rbd-mirror open-vm-tools  nfs-utils && 
-   yum -y install --downloadonly --downloaddir=/rpms/centos74 kubernetes-cni-0.6.0 kubectl-${KUBERNETES_VERSION:1} kubelet-${KUBERNETES_VERSION:1} kubeadm-${KUBERNETES_VERSION:1}"
+   yum -y install --downloadonly --downloaddir=/rpms/centos74 kubernetes-cni-0.6.0 kubectl-${KUBE_VERSION:1} kubelet-${KUBE_VERSION:1} kubeadm-${KUBE_VERSION:1}"
    
   docker run -t --rm -v ${PWD}/rpms:/rpms -v ${PWD}/kubernetes.repo:/etc/yum.repos.d/kubernetes.repo ${CENTOS_75_VERSION}
   bash -c
@@ -33,10 +38,10 @@ script:
    yum install -y https://download.ceph.com/rpm-mimic/el7/noarch/ceph-release-1-1.el7.noarch.rpm &&
    mkdir -p /rpms/centos75 &&
    yum remove -y python-chardet chrony &&
-   yum -y install --downloadonly --downloaddir=/rpms/centos75 ${DOCKER_VERSION} docker-python docker-compose python-chardet python-requests python-jinja2 &&
+   yum -y install --downloadonly --downloaddir=/rpms/centos75 docker-${DOCKER_VERSION} docker-python docker-compose python-chardet python-requests python-jinja2 &&
    yum -y install --downloadonly --downloaddir=/rpms/centos75 chrony audit rsync jq git tcpdump nc bind-utils net-tools ipvsadm &&
    yum -y install --downloadonly --downloaddir=/rpms/centos75 ceph-deploy ceph ceph-radosgw rbd-nbd rbd-mirror open-vm-tools  nfs-utils && 
-   yum -y install --downloadonly --downloaddir=/rpms/centos75 kubernetes-cni-0.6.0 kubectl-${KUBERNETES_VERSION:1} kubelet-${KUBERNETES_VERSION:1} kubeadm-${KUBERNETES_VERSION:1}"
+   yum -y install --downloadonly --downloaddir=/rpms/centos75 kubernetes-cni-0.6.0 kubectl-${KUBE_VERSION:1} kubelet-${KUBE_VERSION:1} kubeadm-${KUBE_VERSION:1}"
    
   docker run -t --rm -v ${PWD}/rpms:/rpms -v ${PWD}/kubernetes.repo:/etc/yum.repos.d/kubernetes.repo ${CENTOS_76_VERSION} 
   bash -c
@@ -44,15 +49,15 @@ script:
    yum install -y https://download.ceph.com/rpm-mimic/el7/noarch/ceph-release-1-1.el7.noarch.rpm &&
    mkdir -p /rpms/centos76 &&
    yum remove -y python-chardet chrony &&
-   yum -y install --downloadonly --downloaddir=/rpms/centos76 ${DOCKER_VERSION} docker-python docker-compose python-chardet python-requests python-jinja2 &&
+   yum -y install --downloadonly --downloaddir=/rpms/centos76 docker-${DOCKER_VERSION} docker-python docker-compose python-chardet python-requests python-jinja2 &&
    yum -y install --downloadonly --downloaddir=/rpms/centos76 chrony audit rsync jq git tcpdump nc bind-utils net-tools ipvsadm &&
    yum -y install --downloadonly --downloaddir=/rpms/centos76 ceph-deploy ceph ceph-radosgw rbd-nbd rbd-mirror open-vm-tools  nfs-utils && 
-   yum -y install --downloadonly --downloaddir=/rpms/centos76 kubernetes-cni-0.6.0 kubectl-${KUBERNETES_VERSION:1} kubelet-${KUBERNETES_VERSION:1} kubeadm-${KUBERNETES_VERSION:1} &&
+   yum -y install --downloadonly --downloaddir=/rpms/centos76 kubernetes-cni-0.6.0 kubectl-${KUBE_VERSION:1} kubelet-${KUBE_VERSION:1} kubeadm-${KUBE_VERSION:1} &&
    yum install -y createrepo &&
    yum clean all &&
    createrepo /rpms"
    
 - sudo chmod -R 755 ${PWD}/rpms
-- docker build -t wisecloud/yum-repo:${VERSION} .
+- docker build -t wisecloud/yum-repo:${KUBE_VERSION} .
 - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-- docker push wisecloud/yum-repo:${VERSION}
+- docker push wisecloud/yum-repo:${KUBE_VERSION}
