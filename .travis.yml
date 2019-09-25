@@ -74,3 +74,6 @@ script:
 - docker build -t wisecloud/yum-repo:${KUBE_VERSION} .
 - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
 - docker push wisecloud/yum-repo:${KUBE_VERSION}
+- docker login -u $ALIYUN_USERNAME -p $ALIYUN_PASSWORD registry.cn-hangzhou.aliyuncs.com
+- docker tag wisecloud/yum-repo:${KUBE_VERSION} registry.cn-hangzhou.aliyuncs.com/wise2c-test/yum-repo:${KUBE_VERSION}
+- docker push registry.cn-hangzhou.aliyuncs.com/wise2c-test/yum-repo:${KUBE_VERSION}
