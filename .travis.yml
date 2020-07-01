@@ -33,7 +33,7 @@ script:
    yum -y install --downloadonly --downloaddir=/rpms/centos74 docker-ce-${DOCKER_VERSION}.el7.x86_64 docker-ce-cli-${DOCKER_VERSION}.el7.x86_64 docker-python docker-compose python-chardet python-requests python-jinja2 python-pip &&
    yum -y install --downloadonly --downloaddir=/rpms/centos74 chrony audit rsync jq git tcpdump nc bind-utils net-tools ipvsadm graphviz &&
    yum -y install --downloadonly --downloaddir=/rpms/centos74 ceph-deploy ceph ceph-radosgw rbd-nbd rbd-mirror open-vm-tools nfs-utils && 
-   yum -y install --downloadonly --downloaddir=/rpms/centos74 kubectl-${KUBE_VERSION:1} kubelet-${KUBE_VERSION:1} kubeadm-${KUBE_VERSION:1}"
+   yum -y install --downloadonly --downloaddir=/rpms/centos74 kubectl-${KUBE_VERSION:1}-0 kubelet-${KUBE_VERSION:1}-0 kubeadm-${KUBE_VERSION:1}-0"
    yum -y install --downloadonly --downloaddir=/rpms/centos74 perl
   docker run -t --rm -v ${PWD}/rpms:/rpms -v ${PWD}/kubernetes.repo:/etc/yum.repos.d/kubernetes.repo centos:7.5.1804
   bash -c
