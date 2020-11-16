@@ -17,7 +17,7 @@ before_install:
 env:
  global:
    - KUBE_VERSION=v1.19.2
-   - DOCKER_VERSION=18.09.8-3
+   - DOCKER_VERSION=19.03.9-3
    - CEPH_VERSION=nautilus
  
 script:
